@@ -22,10 +22,10 @@ library(dplyr)
 library(shinycssloaders)
 
 #Se establece la conexion con la API
-consumer_key = "lOyVVuUKfi8WnbekjW6EmPQZ6"
-consumer_secret = "KhrOwxLyFGXACtSb9IOrV490bNPIqttDYZCVxQFTx1qgWuwlVJ"
-access_token = "2833913589-mbS7RsfjAspHJg0q0zPgqz0OycRw7QuxphfbkVj"
-access_secret = "wBFChvVngjERyBMQZx98TXVQ7wvHtbbnK41yXHIX6shLP"
+consumer_key = ""
+consumer_secret = ""
+access_token = ""
+access_secret = ""
 setup_twitter_oauth(consumer_key, consumer_secret, access_token, access_secret)
 
 get_texto = function(ntweets, cuenta, opciones, idioma){
