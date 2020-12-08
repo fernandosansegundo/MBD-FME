@@ -7,6 +7,7 @@ navbarPage("Análisis con Twitter",
                     sidebarLayout(      
                         # Define the sidebar with one input
                         sidebarPanel(
+                            h4("Obtención de tweets"),
                             sliderInput("ntweets",
                                         "Número de Tweets:",
                                         min = 0,  max = 500,  value = 200, step = 10),
@@ -15,12 +16,13 @@ navbarPage("Análisis con Twitter",
                             textInput("cuenta", "Cuenta:",value = "@JoeBiden", placeholder = "Example: @pepe32"),
                             selectInput("idioma", "Idioma:", 
                                         choices=c("Inglés", "Español")),
+                            h4("Gráfico de la nube"),
                             sliderInput("freqWords",
                                         "Frencuencia mínima:",
-                                        min = 1,  max = 50, value = 15),
+                                        min = 1,  max = 50, value = 5),
                             sliderInput("maxWords",
                                         "Máximo numero de palabras:",
-                                        min = 1,  max = 300,  value = 100),
+                                        min = 1,  max = 300,  value = 20),
                             actionButton("analisis", "Análisis")
                         ),
                         

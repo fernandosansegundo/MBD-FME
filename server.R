@@ -72,7 +72,7 @@ function(input, output, session) {
     wordcloud_rep <- repeatable(wordcloud)
 
     output$nube = renderPlot({
-        wordcloud_rep(names(cloud()), cloud(), 
+        wordcloud_rep(names(cloud()), cloud(), scale=c(4,1),
                       min.freq = input$freqWords, max.words=input$maxWords,
                       colors= brewer.pal(8, "Set2"))
     })
