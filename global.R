@@ -73,10 +73,8 @@ getTermMatrix <- function(text) {
   myCorpus = tm_map(myCorpus, content_transformer(tolower)) # Lo convierte todo a minúsculas
   myCorpus = tm_map(myCorpus, removePunctuation) # Elimina puntuación de nuevo (por si acaso)
   myCorpus = tm_map(myCorpus, removeNumbers) # Elimina numeración
-  spanish_stop = read.csv(file = "spanish_stop.csv")
-  english_stop = read.csv(file = "english_stop.csv")
   myCorpus = tm_map(myCorpus, removeWords, # Elimina las palabras elegidas para que no aparezcan en nuestra matriz
-                    c(stopwords("SMART"), spanish_stop, english_stop))
+                    c(stopwords("SMART"), stopwords("spanish")))
   
   myDTM = TermDocumentMatrix(myCorpus,
                              control = list(minWordLength = 2))
