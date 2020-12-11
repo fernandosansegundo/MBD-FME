@@ -1,5 +1,5 @@
 # Used packages
-pacotes = c("shiny", "shinydashboard", "tm", "wordcloud", "memoise","tidyverse",
+pacotes = c("shiny", "shinydashboard", "tm", "wordcloud","tidyverse",
             "twitteR", "tidyverse", "rtweet", "SnowballC","syuzhet")
 
 # Run the following command to verify that the required packages are installed. If some package
@@ -21,16 +21,23 @@ library(shiny)
 library(dplyr)
 library(shinycssloaders)
 library(shinythemes)
+library(shinydashboard)
+
+# Carga de las claves de conexion a Twitter
+twitter_keys = read.csv(file = ".twitter_keys.csv")
 
 #Se establece la conexion con la API
-consumer_key = ""
-consumer_secret = ""
-access_token = ""
-access_secret = ""
+consumer_key = twitter_keys[1,1]
+consumer_secret = twitter_keys[1,2]
+access_token = twitter_keys[1,3]
+access_secret = twitter_keys[1,4]
 setup_twitter_oauth(consumer_key, consumer_secret, access_token, access_secret)
 
+# Funcion que trae el texto a analizar en funcion de los parametros de entrada.
 get_texto = function(ntweets, cuenta, opciones, idioma){
+  # Carga de idioma a analizar
   clave_idioma = if_else(condition = idioma == "Español", true = "es", false = "en")
+  # Tweets publicados de la cuenta o sobre la cuenta
   propios = if_else(condition = opciones == "Publicados de la cuenta", true = TRUE, false = FALSE)
   
   if (propios) {
@@ -54,26 +61,27 @@ get_texto = function(ntweets, cuenta, opciones, idioma){
   tweets.df2 <- gsub("[[:punct:]]","",tweets.df2)
   tweets.df2 <- gsub("\\w*[0-9]+\\w*\\s*", "",tweets.df2)
   
-  #Transformamos la base de textos importados en un vector para
-  #poder utilizar la función get_nrc_sentiment
+  #Transformamos la base de textos importados en un vector
   palabra.df <- as.vector(tweets.df2)
   return(palabra.df)
 }
 
-# Using "memoise" to automatically cache the results
+# Función que recoge un vector de palabras y lo convierte en una matriz
 getTermMatrix <- function(text) {
   
   myCorpus = Corpus(VectorSource(text))
-  myCorpus = tm_map(myCorpus, content_transformer(tolower))
-  myCorpus = tm_map(myCorpus, removePunctuation)
-  myCorpus = tm_map(myCorpus, removeNumbers)
-  myCorpus = tm_map(myCorpus, removeWords,
-                    c(stopwords("SMART"), "thy", "thou", "thee", "the", "and", "but", "pero", "el", "la", "uno", "una", "las", "los", "..."))
+  myCorpus = tm_map(myCorpus, content_transformer(tolower)) # Lo convierte todo a minúsculas
+  myCorpus = tm_map(myCorpus, removePunctuation) # Elimina puntuación de nuevo (por si acaso)
+  myCorpus = tm_map(myCorpus, removeNumbers) # Elimina numeración
+  spanish_stop = read.csv(file = "spanish_stop.csv")
+  english_stop = read.csv(file = "english_stop.csv")
+  myCorpus = tm_map(myCorpus, removeWords, # Elimina las palabras elegidas para que no aparezcan en nuestra matriz
+                    c(stopwords("SMART"), spanish_stop, english_stop))
   
   myDTM = TermDocumentMatrix(myCorpus,
                              control = list(minWordLength = 2))
   
   m = as.matrix(myDTM)
   
-  sort(rowSums(m), decreasing = TRUE)
+  sort(rowSums(m), decreasing = TRUE) # Ordenamos las palabras para mostrar las más importantes
 }

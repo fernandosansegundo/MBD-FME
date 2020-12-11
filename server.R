@@ -1,23 +1,23 @@
 function(input, output, session) {
     texto <- reactive({
-        # Change when the "update" button is pressed...
+        # Cuando se pulsa el boton de analisis es cuando se cargan de nuevo los tweets
         input$analisis
-        # ...but not for anything else
+        # Mientras se carga muestra el texto y la barra de cargando
         isolate({
             withProgress({
                 setProgress(message = "Cargando ...")
-                get_texto(input$ntweets, input$cuenta, input$opciones, input$idioma)
+                get_texto(input$ntweets, input$cuenta, input$opciones, input$idioma) # llamamos a la funcion traer texto que ejecuta la conexión con la API de twitter
             })
         })
     })
     cloud <- reactive({
-        getTermMatrix(texto())
+        getTermMatrix(texto()) # Funcion que se llama cuando se va a formar la matriz
     })
     emocion1 <- reactive({
         idioma_sentiment = if_else(condition = input$idioma=="Español", true = "spanish", false = "english")
         #Aplicamos la función indicando el vector y el idioma y creamos
         #un nuevo data frame llamado emocion.df
-        get_nrc_sentiment(char_v = texto(), language = idioma_sentiment)
+        get_nrc_sentiment(char_v = texto(), language = idioma_sentiment) #funcion que analiza los sentimientos en funcion del idioma que se le haya pasado
     })
     emocion2 <- reactive({
         #Empezamos transponiendo emocion.df
@@ -26,8 +26,8 @@ function(input, output, session) {
         #Sumamos los puntajes de cada uno de los tweets para cada emocion
         emocion.df3 <- data.frame(rowSums(emocion.df3))
         
-        #Nombramos la columna de puntajes como cuenta
-        names(emocion.df3)[1] <- "cuenta"
+        #Nombramos la columna de puntajes como recuento
+        names(emocion.df3)[1] <- "recuento"
         
         #Dado que las emociones son los nombres de las filas y no una variable
         #transformamos el data frame para incluirlas dentro
@@ -37,11 +37,11 @@ function(input, output, session) {
     output$emociones <- renderPlot({
         ggplot(emocion2()[1:8,],
                aes(x = sentimiento,
-                   y = cuenta)) + 
+                   y = recuento)) + 
             geom_bar(colour="black", stat = "identity", size=.4, fill = brewer.pal(8, "Set2")) +
             labs(title = "Análisis de sentimiento \n Ocho emociones",
                  x = "Sentimiento", y = "Frecuencia") +
-            geom_text(aes(label = cuenta),
+            geom_text(aes(label = recuento),
                       vjust = 1.5, color = "black",
                       size = 5) +
             theme(plot.title = element_text(hjust = 0.5),
@@ -54,11 +54,11 @@ function(input, output, session) {
     output$valoracion <- renderPlot({
         ggplot(emocion2()[9:10,], 
                aes(x = sentimiento,
-                   y = cuenta, fill = sentimiento)) + 
+                   y = recuento, fill = sentimiento)) + 
             geom_bar(colour="black", stat = "identity", size=.4) +
             labs(title = "Análisis de sentimiento \n Valoración positiva o negativa", 
                  x = "Sentimiento", y = "Frecuencia") +
-            geom_text(aes(label = cuenta),
+            geom_text(aes(label = recuento),
                       vjust = 1.5, color = "black",
                       size = 5) +
             theme(plot.title = element_text(hjust = 0.5),

@@ -38,55 +38,32 @@ navbarPage("Análisis con Twitter",
                     )
            ),
            tabPanel("Sobre la App",
-                    p("We used a data set consisting of 39 attributes from 11,158 players registered
-                          in Pro Evolution Soccer 2019 (PES 2019), an electronic soccer game. The data set
-                          was obtained from ", a("PES Data Base", href="http://pesdb.net/", target="_blank"),
-                              "website using web scraping. This app is an interactive tool that allows any user to choose a soccer player from the game
-                         and find the ten players most similar whith him. The similarity between the players is determined using a data mining technique
-                         called", a("k-nearest neighbors", href="https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm", target="_blank"), ".",style = "font-size:25px"),
-                    
+                    p("La aplicación trata datos extraídos de Twitter. Los datos son extraídos al momento con una conexión 
+                      establecida a la API de Twitter. Para replicar este proyecto, hay que crearse una cuenta de desarrollador
+                      y conseguir las claves para poder extraer los datos. El código de la App esta alojado en el 
+                      siguiente ", a("repositorio", href="https://github.com/gvalleg/MBD-FME", target="_blank"), "de GitHub."),
                     hr(), 
-                    p("The available player positions are:",style = "font-size:25px"),
-                    p("GK: Goalkeeper",style = "font-size:15px;color: blue"),
-                    p("CB: Center Back",style = "font-size:15px;color: blue"),
-                    p("RB: Right Back",style = "font-size:15px;color: blue"),
-                    p("LB: Left Back",style = "font-size:15px;color: blue"),
-                    p("DMF: Defense Midfield",style = "font-size:15px;color: blue"),
-                    p("CMF: Center Midfield",style = "font-size:15px;color: blue"),
-                    p("AMF: Attacking Midfield",style = "font-size:15px;color: blue"),
-                    p("RMF: Right Midfield",style = "font-size:15px;color: blue"),
-                    p("LMF: Left Midfield",style = "font-size:15px;color: blue"),
-                    p("RWF: Right Wing Forward",style = "font-size:15px;color: blue"),
-                    p("LWF: Left Wing Forward",style = "font-size:15px;color: blue"),
-                    p("SS: Second Striker",style = "font-size:15px;color: blue"),
-                    p("CF: Counter Forward",style = "font-size:15px;color: blue"),
-                    hr(), 
-                    
-                    p("The abbreviations used in the radar chart are:",style = "font-size:25px"),
-                    
-                    p("BAL: Unwavering Balance",style = "font-size:15px;color: blue"),
-                    p("STM: Stamina",style = "font-size:15px;color: blue"),
-                    p("SPE: Speed",style = "font-size:15px;color: blue"),
-                    p("EXP: Explosive Power",style = "font-size:15px;color: blue"),
-                    p("ATT: Attacking Prowess",style = "font-size:15px;color: blue"),
-                    p("BCO: Ball Control",style = "font-size:15px;color: blue"),
-                    p("DRI: Dribbling",style = "font-size:15px;color: blue"),
-                    p("LPAS: Low Pass",style = "font-size:15px;color: blue"),
-                    p("APAS: Air Pass (Lofted Pass)",style = "font-size:15px;color: blue"),
-                    p("KPOW: Kicking Power",style = "font-size:15px;color: blue"),
-                    p("FIN: Finishing",style = "font-size:15px;color: blue"),
-                    p("PKIC: Place Kicking",style = "font-size:15px;color: blue"),
-                    p("SWE: Swerve",style = "font-size:15px;color: blue"),
-                    p("HEA: Header",style = "font-size:15px;color: blue"),
-                    p("JUM: Jump",style = "font-size:15px;color: blue"),
-                    p("PHY: Physical Contact",style = "font-size:15px;color: blue"),
-                    p("BWIN: Ball Winning",style = "font-size:15px;color: blue"),
-                    p("DEF: Defensive Prowess",style = "font-size:15px;color: blue"),
-                    p("GOA: Goalkeeping",style = "font-size:15px;color: blue"),
-                    p("GKC: GK Catch",style = "font-size:15px;color: blue"),
-                    p("CLE: Clearing",style = "font-size:15px;color: blue"),
-                    p("REF: Reflexes",style = "font-size:15px;color: blue"),
-                    p("COV: Coverage",style = "font-size:15px;color: blue")
+                    h3("Funcionamiento"),
+                    p("El panel de usuario de la App cuenta con dos partes. La primera es la parte correspondiente a la 
+                      extracción de los Tweets, mientras que la segunda va enfocada al último de los gráficos 
+                      (nube de palabras):"),
+                    h4("Obtención de los Tweets"),
+                    tags$ul(
+                      tags$li("Elección del número de Tweets que te quieres traer desde la fecha actual."),
+                      tags$li("Traer los Tweets publicados por la cuenta en concreto, o traer los Tweets que se han escrito 
+                      sobre la cuenta."),
+                      tags$li("Elección de la cuenta en concreto que se quiere investigar."),
+                      tags$li("Elección del idioma sobre el que se quiere realizar el análisis de sentimientos. Aquí aclarar que
+                      la App con la opción 'Publicados sobre la cuenta', solo se trae los Tweets en ese idioma, pero si se 
+                      elige los Tweets publicados de la cuenta no distingue por idioma.")
+                    ),
+                    h4("Gráfico de la nube"),
+                    p("Los los sliders de esta parte son para jugar con el conjunto de los datos extraídos de Twitter:"),
+                    tags$ul(
+                      tags$li("Elección de la frecuencia mínima que tiene que tener una palabra para aparecer dentro del 
+                      gráfico de la nube generado."),
+                      tags$li("Elección del máximo número de palabras que aparecen en el gráfico.")
+                    )
            ),
            tabPanel("Desarrollador",
                     p(a("Guillermo Valle Gutiérrez", href="https://www.linkedin.com/in/guillermo-valle-guti%C3%A9rrez-889b93158/", target="_blank"),style = "font-size:25px"),
